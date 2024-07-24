@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InventariModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Asset">
+    <Key>
+      <PropertyRef Name="AssetID" />
+    </Key>
+    <Property Name="AssetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AssetCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="AssetCategoryID" Type="int" />
+    <Property Name="PurchasedOn" Type="datetime" />
+    <Property Name="CurrentConditionID" Type="int" />
+    <Property Name="PurchasePrice" Type="money" />
+    <Property Name="CurrentValue" Type="money" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="AssetCategoryID" />
+    </Key>
+    <Property Name="AssetCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Condition">
+    <Key>
+      <PropertyRef Name="CurrentConditionID" />
+    </Key>
+    <Property Name="CurrentConditionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Asset_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Asset" Type="Self.Asset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="AssetCategoryID" />
+      </Principal>
+      <Dependent Role="Asset">
+        <PropertyRef Name="AssetCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Asset_Condition">
+    <End Role="Condition" Type="Self.Condition" Multiplicity="0..1" />
+    <End Role="Asset" Type="Self.Asset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Condition">
+        <PropertyRef Name="CurrentConditionID" />
+      </Principal>
+      <Dependent Role="Asset">
+        <PropertyRef Name="CurrentConditionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InventariModelStoreContainer">
+    <EntitySet Name="Asset" EntityType="Self.Asset" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Condition" EntityType="Self.Condition" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Asset_Category" Association="Self.FK_Asset_Category">
+      <End Role="Category" EntitySet="Category" />
+      <End Role="Asset" EntitySet="Asset" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Asset_Condition" Association="Self.FK_Asset_Condition">
+      <End Role="Condition" EntitySet="Condition" />
+      <End Role="Asset" EntitySet="Asset" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

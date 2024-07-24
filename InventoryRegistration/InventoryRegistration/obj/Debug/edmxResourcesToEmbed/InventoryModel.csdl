@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="InventariModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Asset">
+    <Key>
+      <PropertyRef Name="AssetID" />
+    </Key>
+    <Property Name="AssetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AssetCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="AssetCategoryID" Type="Int32" />
+    <Property Name="PurchasedOn" Type="DateTime" Precision="3" />
+    <Property Name="CurrentConditionID" Type="Int32" />
+    <Property Name="PurchasePrice" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="CurrentValue" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Asset_Category" FromRole="Asset" ToRole="Category" />
+    <NavigationProperty Name="Condition" Relationship="Self.FK_Asset_Condition" FromRole="Asset" ToRole="Condition" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="AssetCategoryID" />
+    </Key>
+    <Property Name="AssetCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Assets" Relationship="Self.FK_Asset_Category" FromRole="Category" ToRole="Asset" />
+  </EntityType>
+  <EntityType Name="Condition">
+    <Key>
+      <PropertyRef Name="CurrentConditionID" />
+    </Key>
+    <Property Name="CurrentConditionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Assets" Relationship="Self.FK_Asset_Condition" FromRole="Condition" ToRole="Asset" />
+  </EntityType>
+  <Association Name="FK_Asset_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Asset" Type="Self.Asset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="AssetCategoryID" />
+      </Principal>
+      <Dependent Role="Asset">
+        <PropertyRef Name="AssetCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Asset_Condition">
+    <End Role="Condition" Type="Self.Condition" Multiplicity="0..1" />
+    <End Role="Asset" Type="Self.Asset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Condition">
+        <PropertyRef Name="CurrentConditionID" />
+      </Principal>
+      <Dependent Role="Asset">
+        <PropertyRef Name="CurrentConditionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="InventariEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Assets" EntityType="Self.Asset" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Conditions" EntityType="Self.Condition" />
+    <AssociationSet Name="FK_Asset_Category" Association="Self.FK_Asset_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Asset" EntitySet="Assets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Asset_Condition" Association="Self.FK_Asset_Condition">
+      <End Role="Condition" EntitySet="Conditions" />
+      <End Role="Asset" EntitySet="Assets" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

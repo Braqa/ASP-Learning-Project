@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="InventariModelStoreContainer" CdmEntityContainer="InventariEntities">
+    <EntitySetMapping Name="Assets">
+      <EntityTypeMapping TypeName="InventariModel.Asset">
+        <MappingFragment StoreEntitySet="Asset">
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+          <ScalarProperty Name="AssetCategoryID" ColumnName="AssetCategoryID" />
+          <ScalarProperty Name="PurchasedOn" ColumnName="PurchasedOn" />
+          <ScalarProperty Name="CurrentConditionID" ColumnName="CurrentConditionID" />
+          <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+          <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="InventariModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="AssetCategoryID" ColumnName="AssetCategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Conditions">
+      <EntityTypeMapping TypeName="InventariModel.Condition">
+        <MappingFragment StoreEntitySet="Condition">
+          <ScalarProperty Name="CurrentConditionID" ColumnName="CurrentConditionID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
